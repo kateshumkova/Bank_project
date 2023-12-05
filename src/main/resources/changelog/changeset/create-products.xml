@@ -1,0 +1,57 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+  <changeSet id="5" author="root">
+
+
+    <createTable tableName="products">
+      <column name="id" type="bigint" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+
+      <column name="name" type="VARCHAR(100)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="status" type="ENUM('ACTIVE', 'INACTIVE')">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="currency_code" type="int">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="interest_rate" type="double">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="limit_min" type="decimal(38, 2)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="limit_max" type="decimal(38, 2)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="deposit_period" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="payment_frequency" type="int">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="created_at" type="date">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="updated_at" type="date">
+        <constraints nullable="false"/>
+      </column>
+
+    </createTable>
+
+
+  </changeSet>
+</databaseChangeLog>

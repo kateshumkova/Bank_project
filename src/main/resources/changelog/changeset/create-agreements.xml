@@ -1,0 +1,55 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+  <changeSet id="6" author="root">
+    <createTable tableName="agreements">
+      <column name="id" type="bigint" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="client_id" type="bigint">
+        <constraints nullable="false" foreignKeyName="fk_clients_agreements" references="clients(id)"/>
+      </column>
+
+      <column name="account_id" type="bigint">
+        <constraints nullable="false" foreignKeyName="fk_accounts_agreements" references="accounts(id)"/>
+      </column>
+
+      <column name="product_id" type="bigint">
+        <constraints nullable="false" foreignKeyName="fk_products_agreements" references="products(id)"/>
+      </column>
+
+      <column name="manager_id" type="bigint">
+        <constraints nullable="false" foreignKeyName="fk_manager_agreements" references="managers(id)"/>
+      </column>
+
+
+      <column name="interest_rate" type="double">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="status" type="ENUM('ACTIVE', 'INACTIVE')">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="sum" type="decimal(38, 2)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="created_at" type="date">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="maturity_date" type="date">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="updated_at" type="date">
+        <constraints nullable="false"/>
+      </column>
+
+    </createTable>
+
+  </changeSet>
+</databaseChangeLog>
