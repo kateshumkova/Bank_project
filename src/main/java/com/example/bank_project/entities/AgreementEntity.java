@@ -56,7 +56,7 @@ public class AgreementEntity {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
+   // @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "maturity_date")
     private Instant maturityDate;
 

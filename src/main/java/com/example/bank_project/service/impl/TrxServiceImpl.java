@@ -92,7 +92,7 @@ public class TrxServiceImpl implements TrxService {
             BigDecimal amountTrx = trxDto.getAmount();
             if (amountTrx.compareTo(balanceBeforeTrx)  <= 0 ) {
                 accountEntity.setBalance(balanceBeforeTrx.subtract(trxDto.getAmount()));
-            }
+            } else log.info("Balance is not enough to proceed the operation");
         }
         trxEntity.setAccount(accountEntity);
 

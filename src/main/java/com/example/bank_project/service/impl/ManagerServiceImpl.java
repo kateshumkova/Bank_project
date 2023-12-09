@@ -4,6 +4,7 @@ import com.example.bank_project.dtos.ClientDto;
 import com.example.bank_project.dtos.ManagerDto;
 import com.example.bank_project.entities.ClientEntity;
 import com.example.bank_project.entities.ManagerEntity;
+import com.example.bank_project.enums.Status;
 import com.example.bank_project.exception.NotFoundException;
 import com.example.bank_project.exception.ValidationException;
 import com.example.bank_project.mappers.ManagerMapper;
@@ -80,7 +81,10 @@ public class ManagerServiceImpl implements ManagerService {
     public void deleteManager(Long id) {
         Optional<ManagerEntity> optManagerEntity = managerRepository.findById(id);
         if (optManagerEntity.isPresent()) {
-            managerRepository.deleteById(id);
+            //managerRepository.deleteById(id);
+            ManagerEntity managerEntity = optManagerEntity.get();
+            managerEntity.setStatus(Status.INACTIVE);
+            managerRepository.save(managerEntity);
             return;
         }
         throw new NotFoundException("Manager " + id + "not found");

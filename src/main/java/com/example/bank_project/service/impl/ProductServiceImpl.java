@@ -4,6 +4,8 @@ import com.example.bank_project.dtos.ClientDto;
 import com.example.bank_project.dtos.ProductDto;
 import com.example.bank_project.entities.ClientEntity;
 import com.example.bank_project.entities.ProductEntity;
+import com.example.bank_project.entities.TrxEntity;
+import com.example.bank_project.enums.Status;
 import com.example.bank_project.exception.NotFoundException;
 import com.example.bank_project.exception.ValidationException;
 import com.example.bank_project.mappers.ClientMapper;
@@ -90,7 +92,10 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         Optional<ProductEntity> optProductEntity = productRepository.findById(id);
         if (optProductEntity.isPresent()) {
-            productRepository.deleteById(id);
+           ProductEntity productEntity = optProductEntity.get();
+            productEntity.setStatus(Status.INACTIVE);
+            productRepository.save(productEntity);
+           // productRepository.deleteById(id);
             return;
         }
         throw new NotFoundException("Product " + id + " is not found");

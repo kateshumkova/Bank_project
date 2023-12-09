@@ -3,6 +3,7 @@ package com.example.bank_project.service.impl;
 import com.example.bank_project.dtos.*;
 import com.example.bank_project.entities.*;
 import com.example.bank_project.exception.NotFoundException;
+import com.example.bank_project.exception.ValidationException;
 import com.example.bank_project.mappers.*;
 import com.example.bank_project.repository.*;
 import com.example.bank_project.service.AccountService;
@@ -12,6 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +60,7 @@ public class AgreementServiceImpl implements AgreementService {
             throw new NotFoundException("Agreement not found");
         }
     }
+
     @Override
     public List<AgreementDto> findByClientId(Long id) {
         List<AgreementEntity> agreementEntities = agreementRepository.findByClientId(id);
@@ -64,6 +73,7 @@ public class AgreementServiceImpl implements AgreementService {
                     .toList();
         }
     }
+
     @Override
     public List<AgreementDto> findAllActive() {
         List<AgreementEntity> agreementEntities = agreementRepository.findByStatus(1);
@@ -76,6 +86,7 @@ public class AgreementServiceImpl implements AgreementService {
                     .toList();
         }
     }
+
     @Override
     public List<AgreementDto> findByAccountId(Long id) {
         List<AgreementEntity> agreementEntities = agreementRepository.findByAccountId(id);
@@ -125,10 +136,22 @@ public class AgreementServiceImpl implements AgreementService {
         if (optClientEntity.isEmpty() || optProductEntity.isEmpty() || optManagerEntity.isEmpty()) {
             throw new NotFoundException("Some value is empty");
         }
+
+
+        ProductEntity productEntity = optProductEntity.get();
+
+        //validation of sum and duration
+        if ((createAgreementRequest.getSum().compareTo(productEntity.getLimitMax()) > 0)
+                || (createAgreementRequest.getSum().compareTo(productEntity.getLimitMin()) < 0)) {
+            throw new ValidationException("Sum of agreement is less or greater than than limits of the product");
+        }
+        if (createAgreementRequest.getDuration() != productEntity.getDepositPeriod()) {
+            throw new ValidationException("Duration of agreement is less or greater than it is in duration setups of the product");
+        }
+
         AgreementEntity agreementEntity = new AgreementEntity();
         ClientEntity clientEntity = optClientEntity.get();
         agreementEntity.setClient(clientEntity);
-        ProductEntity productEntity = optProductEntity.get();
         agreementEntity.setProduct(productEntity);
         ManagerEntity managerEntity = optManagerEntity.get();
         agreementEntity.setManager(managerEntity);
@@ -139,6 +162,11 @@ public class AgreementServiceImpl implements AgreementService {
         agreementEntity.setInterestRate(productEntity.getInterestRate());
         agreementEntity.setSum(createAgreementRequest.getSum());
         agreementEntity.setStatus(ACTIVE);
+
+        LocalDate maturityDate = LocalDate.now().plusMonths(createAgreementRequest.getDuration());
+
+        Instant instantMaturityDate = maturityDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        agreementEntity.setMaturityDate(instantMaturityDate);
         AgreementEntity savedAgreementEntity = agreementRepository.saveAndFlush(agreementEntity);
 
         CreateAgreementResponse createAgreementResponse = new CreateAgreementResponse();

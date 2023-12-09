@@ -12,6 +12,7 @@
   <include file="/db/changelog/changeset/create-agreements.xml"/>
   <include file="/db/changelog/changeset/create-roles.xml"/>
   <include file="/db/changelog/changeset/create-users.xml"/>
+  <include file="/db/changelog/changeset/fill-db.xml"/>
   <!--
   <include file="/db/changelog/changeset/create-users-roles.xml"/>
 -->

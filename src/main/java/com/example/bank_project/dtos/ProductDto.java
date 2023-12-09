@@ -18,7 +18,7 @@ public class ProductDto {
     @Schema(description = "Это название продукта", example = "Пенсионный вклад")
     private String name;
 
-    @Schema(description = "Статус продукта Active - доступный к оформлению, Inactive - в архиве", example = "1")
+    @Schema(description = "Статус продукта Active - доступный к оформлению, Inactive - в архиве", example = "ACTIVE")
     @Enumerated(EnumType.STRING)
     private Status status;
 

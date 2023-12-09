@@ -46,7 +46,7 @@ public class InterestRatePayment {
                 AccountEntity accountEntity = optAccountEntity.get();
                 BigDecimal currentBalance = accountEntity.getBalance();
                 BigDecimal interestRate = currentBalance.multiply(BigDecimal.valueOf(agreementMapper.toEntity(agreementDto).getInterestRate() / 100 / 12))
-                        .multiply(agreementMapper.toEntity(agreementDto).getProduct().getPaymentFrequency());
+                        .multiply(BigDecimal.valueOf(agreementMapper.toEntity(agreementDto).getProduct().getPaymentFrequency()));
                 TrxEntity trxEntity = new TrxEntity();
                 trxEntity.setAccount(accountEntity);
                 trxEntity.setStatus(Status.ACTIVE);

@@ -63,10 +63,10 @@ public class ProductEntity {
     private BigDecimal limitMax;
 
     @Column(name = "deposit_period")
-    private BigDecimal depositPeriod;
+    private int depositPeriod;
 
     @Column(name = "payment_frequency")
-    private BigDecimal paymentFrequency;
+    private int paymentFrequency;
 
     @CreationTimestamp
     @Column (name ="created_at")

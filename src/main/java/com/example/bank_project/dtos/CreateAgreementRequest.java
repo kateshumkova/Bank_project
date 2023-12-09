@@ -12,10 +12,10 @@ import lombok.Setter;
 
 
 public class CreateAgreementRequest {
-   // @Schema(description = "Это id договора", example = "2")
-   // private AgreementDto agreement;
-  //  @Schema(description = "Номер счета, открытый под договор", example = "2")
-  //  private AccountDto account;
+    // @Schema(description = "Это id договора", example = "2")
+    // private AgreementDto agreement;
+    //  @Schema(description = "Номер счета, открытый под договор", example = "2")
+    //  private AccountDto account;
     @Schema(description = "Клиент,с которым заключен договор", example = "Майоров")
     private Long clientId;
     @Schema(description = "Менеджер, ведущий договор", example = "Петров")
@@ -24,6 +24,9 @@ public class CreateAgreementRequest {
     private Long productId;
     @Schema(description = "Сумма договора", example = "10000000")
     private BigDecimal sum;
+    @Schema(description = "Срок договора в месяцах", example = "12")
+    private int duration;
+
 }
 
 
