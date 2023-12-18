@@ -58,8 +58,7 @@ public class ClientEntity {
     @Column (name ="updated_at")
     private Date updatedAt;
 
-    @Transient
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users", referencedColumnName = "id")
     private UserEntity user;
 }

@@ -26,6 +26,10 @@ public class UserEntity implements UserDetails {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
+   // @OneToOne
+   // @JoinColumn(name = "id")
+   // private ClientEntity client;
+
     public Long getId() {
         return id;
     }

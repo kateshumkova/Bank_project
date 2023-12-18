@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -50,8 +51,8 @@ public class TrxController {
             @ApiResponse(responseCode = "404", description = "Транзакции не найдены",
                     content = @Content) })
     @GetMapping("/search")
-    public List<TrxDto> getByAccountId(@Parameter(description = "id счета, по которому ведется поиск транзакций", example = "2") @RequestParam Long id) {
-        return trxService.findByAccountId(id);
+    public List<TrxDto> getByAccountId(@Parameter(description = "id счета, по которому ведется поиск транзакций", example = "2") @RequestParam Long id, Authentication authentication ) {
+        return trxService.findByAccountId(id, authentication);
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')")
     @Operation(summary = "Получить транзакцию по id")

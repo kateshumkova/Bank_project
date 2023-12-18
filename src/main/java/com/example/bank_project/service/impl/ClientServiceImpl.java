@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,8 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto getById(Long id) {
         Optional<ClientEntity> optClientEntity = clientRepository.findById(id);
         if (optClientEntity.isPresent()) {
+            ClientEntity clientEntity = optClientEntity.get();
+            var user = clientEntity.getUser();
             return clientMapper.toDto(optClientEntity.get());
         } else {
             throw new NotFoundException("Client " + id + " is not found");
@@ -65,7 +68,9 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto createClient(ClientDto clientDto) {
         Optional<ClientEntity> optClientEntity = clientRepository.getByEmail(clientDto.getEmail());
         if (optClientEntity.isEmpty()) {
-            ClientEntity savedClient = clientRepository.save(clientMapper.toEntity(clientDto));
+            ClientEntity clientEntity = clientMapper.toEntity(clientDto);
+            clientEntity.setCreatedAt(Instant.now());
+            ClientEntity savedClient = clientRepository.save(clientEntity);
             log.info("Created and saved client with ID= {}", savedClient.getId());
             return clientMapper.toDto(savedClient);
         } else {

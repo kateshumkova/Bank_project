@@ -12,10 +12,10 @@ public class UserRoleEntity {
     private Long id;
 
     @Column(name = "roles_id")
-    private String rolesId;
+    private Long rolesId;
 
     @Column(name = "users_id")
-    private String usersId;
+    private Long usersId;
 
 //    @OneToOne(fetch = FetchType.EAGER)
 //    @JoinTable(

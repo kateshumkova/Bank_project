@@ -21,7 +21,6 @@ public class ClientDto {
     //private int status;
     @Enumerated(EnumType.STRING)
     private Status status;
-
     @Schema(description = "Имя клиента", example = "Иван")
     private String firstName;
     @Schema(description = "Фамилия клиента", example = "Иванов")

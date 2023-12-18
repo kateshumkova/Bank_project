@@ -2,6 +2,7 @@ package com.example.bank_project.controller;
 
 import com.example.bank_project.dtos.AccountDto;
 import com.example.bank_project.dtos.CreateAgreementRequest;
+import com.example.bank_project.dtos.CreateClientUserDto;
 import com.example.bank_project.dtos.UserDto;
 import com.example.bank_project.entities.AccountEntity;
 import com.example.bank_project.service.AccountService;
@@ -36,5 +37,20 @@ public class UserController {
     @PostMapping("/")
     public void add(@RequestBody UserDto userDto) {
         userService.createUser(userDto);
+    }
+
+
+    @Operation(summary = "Создать запись о новом пользователе - клиенте")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Пользователь добавлен",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CreateClientUserDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Неверный запрос",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Пользователь не добавлен",
+                    content = @Content)})
+    @PostMapping("/client/")
+    public void add(@RequestBody CreateClientUserDto createClientUserDto) {
+        userService.createClientUser(createClientUserDto);
     }
 }

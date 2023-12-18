@@ -1,20 +1,21 @@
 package com.example.bank_project.service.impl;
 
 import com.example.bank_project.dtos.TrxDto;
-import com.example.bank_project.entities.AccountEntity;
-import com.example.bank_project.entities.AgreementEntity;
-import com.example.bank_project.entities.TrxEntity;
+import com.example.bank_project.entities.*;
 import com.example.bank_project.enums.Status;
 import com.example.bank_project.enums.TrxType;
 import com.example.bank_project.exception.NotFoundException;
 import com.example.bank_project.mappers.AccountMapper;
 import com.example.bank_project.mappers.TrxMapper;
 import com.example.bank_project.repository.AccountRepository;
+import com.example.bank_project.repository.ClientRepository;
 import com.example.bank_project.repository.TrxRepository;
+import com.example.bank_project.repository.UserRepository;
 import com.example.bank_project.service.TrxService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,6 +30,8 @@ public class TrxServiceImpl implements TrxService {
     private final TrxMapper trxMapper;
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     public List<TrxDto> getAll() {
@@ -49,16 +52,36 @@ public class TrxServiceImpl implements TrxService {
     }
 
     @Override
-    public List<TrxDto> findByAccountId(Long accountId) {
+    public List<TrxDto> findByAccountId(Long accountId, Authentication authentication) {
         List<TrxEntity> trxEntities = trxRepository.findByAccountId(accountId);
         if (trxEntities.isEmpty()) {
-            throw new NotFoundException("There is no trx for account" + accountId);
+            throw new NotFoundException("There is no trx for this account" + accountId);
         } else {
+         /*  // String name = authentication.getName(); //mary
+            Optional<UserEntity> optUserEntity = userRepository.findByUsername(authentication.getName());
+            if (optUserEntity.isEmpty()) {
+                throw new NotFoundException("There is no such username" + authentication.getName());
+            } else {
+                UserEntity userEntity = optUserEntity.get();
+                Optional<ClientEntity> optClientEntity = clientRepository.findByUserEntity(userEntity);
+                if (optClientEntity.isEmpty()) {
+                    throw new NotFoundException("There is no client with such username" + authentication.getName());
+                } else {
+
+
+//            var author = authentication.getAuthorities();
+//            var cred = authentication.getCredentials();
+//            var details = authentication.getDetails();
+//            var principal = authentication.getPrincipal();
+//            var authClass = authentication.getClass();
+       */
             return trxEntities.stream()
-                    .map(trxMapper::toDto)
-                    .toList();
-        }
-    }
+                            .map(trxMapper::toDto)
+                            .toList();
+                }
+            }
+        //}
+   // }
 
     @Override
     public List<TrxDto> findByStatus(int status) {
@@ -90,7 +113,7 @@ public class TrxServiceImpl implements TrxService {
             //проверка достаточен ли баланс для проведения операции списания
 
             BigDecimal amountTrx = trxDto.getAmount();
-            if (amountTrx.compareTo(balanceBeforeTrx)  <= 0 ) {
+            if (amountTrx.compareTo(balanceBeforeTrx) <= 0) {
                 accountEntity.setBalance(balanceBeforeTrx.subtract(trxDto.getAmount()));
             } else log.info("Balance is not enough to proceed the operation");
         }

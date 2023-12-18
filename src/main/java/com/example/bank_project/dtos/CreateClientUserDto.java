@@ -1,19 +1,14 @@
 package com.example.bank_project.dtos;
 
-import com.example.bank_project.entities.RoleEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 @Schema(description = "ДТО пользователя")
 
-public class UserDto {
+public class CreateClientUserDto {
 
     @Schema(description = "Имя пользователя", example = "maryPoppins")
     private String username;
@@ -21,4 +16,8 @@ public class UserDto {
     private String password;
     @Schema(description = "Роль пользователя", example = "ROLE_USER")
     private String roleName;
+    @Schema(description = "id клиента", example = "1")
+    private Long clientId;
+
+
 }

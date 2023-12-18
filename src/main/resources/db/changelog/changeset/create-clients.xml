@@ -25,7 +25,7 @@
       </column>
 
       <column name="email" type="varchar(50)">
-        <constraints nullable="false"/>
+        <constraints unique="true" nullable="false"/>
       </column>
       <column name="address" type="varchar(80)">
         <constraints nullable="false"/>
@@ -41,6 +41,11 @@
 
       <column name="updated_at" type="date">
         <constraints nullable="false"/>
+      </column>
+
+      <column name="user_id" type="bigint">
+        <constraints nullable="true" foreignKeyName="fk_clients_users" references="users(id)"/>
+
       </column>
 
     </createTable>
